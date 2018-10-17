@@ -46,7 +46,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     # types to be used in the database.
     data_types = {
         'AutoField': 'int32',
-        'BigAutoField': 'int64',
+        'BigAutoField': 'bigint',
         'BinaryField': 'binary',
         'BooleanField': 'boolean',
         'CharField': 'string',
@@ -54,12 +54,12 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         'DateField': 'date',
         'DateTimeField': 'date',
         'DecimalField': 'number',
-        'DurationField': 'int64',
+        'DurationField': 'bigint',
         'FileField': 'string',
         'FilePathField': 'string',
         'FloatField': 'number',
         'IntegerField': 'int32',
-        'BigIntegerField': 'int64',
+        'BigIntegerField': 'bigint',
         'IPAddressField': 'string',
         'GenericIPAddressField': 'string',
         'NullBooleanField': 'boolean',

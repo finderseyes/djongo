@@ -589,7 +589,7 @@ class AlterQuery(VoidQuery):
             )):
                 pass
             elif tok.match(tokens.Name.Builtin, (
-                'integer', 'bool', 'char', 'date',
+                'integer', 'bigint', 'bool', 'char', 'date',
                 'datetime', 'float', 'time'
             )):
                 pass
@@ -605,6 +605,7 @@ class AlterQuery(VoidQuery):
                 i = SQLToken.placeholder_index(tok)
                 self._default = self.params[i]
             elif tok.match(tokens.Keyword, 'UNIQUE'):
+                self.field_dir = getattr(self, 'field_dir', [(self._iden_name, 1)])
                 self.execute = self._unique
             elif tok.match(tokens.Keyword, 'INDEX'):
                 self.execute = self._index
@@ -874,6 +875,14 @@ class Result:
             tok_id, tok = sm.token_next(tok_id)
             table_name = tok.get_name()
             self.db.drop_collection(table_name)
+        elif tok.match(tokens.Keyword, 'INDEX'):
+            tok_id, tok = sm.token_next(tok_id)
+            table_name = tok.get_name()
+
+            tok_id, tok = sm.token_next(tok_id)
+            indices = [field.strip(' "') for field in tok.value.strip('()').split(',')]
+            for index in indices:
+                self.db[table_name].drop_index(index)
         else:
             raise SQLDecodeError('statement:{}'.format(sm))
 
